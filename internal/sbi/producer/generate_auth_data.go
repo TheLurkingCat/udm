@@ -554,7 +554,7 @@ func GenerateAuthDataProcedure(authInfoRequest models.AuthenticationInfoRequest,
 		av.Autn = hex.EncodeToString(AUTN)
 		av.Kausf = hex.EncodeToString(kdfValForKausf)
 		av.AvType = models.AvType__5_G_HE_AKA
-	} else { // EAP-AKA'
+	} else if authSubs.AuthenticationMethod == models.AuthMethod_EAP_AKA_PRIME { // EAP-AKA'
 		response.AuthType = models.AuthType_EAP_AKA_PRIME
 
 		// derive CK' and IK'
@@ -583,6 +583,8 @@ func GenerateAuthDataProcedure(authInfoRequest models.AuthenticationInfoRequest,
 		av.CkPrime = hex.EncodeToString(ckPrime)
 		av.IkPrime = hex.EncodeToString(ikPrime)
 		av.AvType = models.AvType_EAP_AKA_PRIME
+	} else if authSubs.AuthenticationMethod == "EAP_TLS" {
+		av.AvType = "EAP_TLS"
 	}
 
 	response.AuthenticationVector = &av
